@@ -13,6 +13,14 @@ public class Grille {
 				grille[x][y]=false;
 			}
 		}
+		
+		grille[0][0] = true;
+		grille[1][0] = true;
+		grille[1][1] = true;
+		grille[1][2] = true;
+		
+		System.out.println("ok");
+		
 	}
 
 	public int getCote() {
@@ -23,5 +31,9 @@ public class Grille {
 	public boolean get(int x, int y) {
 		// TODO Auto-generated method stub
 		return grille[x][y];
+	}
+
+	public boolean[][] getGrille() {
+		return grille;
 	}
 }
