@@ -7,6 +7,7 @@ import tchateau.javase.gameoflife.ihm.PanelGraphics;
 
 public class IterationManagerImpl implements IterationManager {
 	Timer iterationTimer;
+	int nbrIteration = 0;
 	
 	public IterationManagerImpl(PanelGraphics pan){
 		iterationTimer = new Timer(1000, pan);
@@ -25,47 +26,74 @@ public class IterationManagerImpl implements IterationManager {
 
 	@Override
 	public boolean[][] jouer(boolean[][] grilleEntree) {
-		boolean[][] grilleRetour = null;
+		boolean[][] grilleRetour = new boolean[grilleEntree.length][grilleEntree.length];
+		boolean[][] instantané;
 		
-		int x=1;
-		int y=1;
+		for(int x=0 ; x<grilleEntree.length ; x++) {
+			for(int y=0 ; y<grilleEntree.length ; y++) {
+				grilleRetour[x][y] = grilleEntree[x][y];
+			}
+		}
 		
-		boolean[][] instantané = genererInstantane(grilleEntree, x, y);
 
-//		for(int x=0 ; x<grilleEntree.length ; x++) {
-//			for(int y=0 ; y<grilleEntree.length ; y++) {
-//				if(grilleEntree[x][y]) {
-//					boolean[][] instantané = genererInstantane(grilleEntree, x, y);
-//					grilleRetour[x][y] = doitSurvivre(instantané);
-//				}
-//				else {
-//					grilleRetour[x][y] = doitVivre(grilleEntree);
-//				}
-//			}
-//		}
+		for(int x=0 ; x<grilleEntree.length ; x++) {
+			for(int y=0 ; y<grilleEntree.length ; y++) {
+				
+				instantané = genererInstantane(grilleEntree, x, y);
+				
+				if(instantané[1][1]) {
+					if(!doitSurvivre(instantané))
+						grilleRetour[x][y] = false;
+				}
+				else {
+					if(doitNaitre(instantané))
+						grilleRetour[x][y] = true ;
+				}
+			}
+		}
 		
+		nbrIteration++;
 		return grilleRetour;
 	}
 
 	private boolean[][] genererInstantane(boolean[][] grilleEntree, int x, int y) {
 		boolean[][] instantane = new boolean[3][3];
 		
-		instantane[1][2] = grilleEntree[x][y];
 		
 		try {
-			instantane[0][0] = grilleEntree[x-1][y+1];
+			instantane[0][0] = grilleEntree[x-1][y-1];
 		}catch(Exception e){
 			instantane[0][0] = false;
 		}
 		
 		try {
-			instantane[1][0] = grilleEntree[x][y + 1];
+			instantane[0][1] = grilleEntree[x-1][y];
+		} catch (Exception e) {
+			instantane[0][1] = false;
+		}
+		
+		try {
+			instantane[0][2] = grilleEntree[x-1][y+1];
+		} catch (Exception e) {
+			instantane[0][2] = false;
+		}
+		
+		try {
+			instantane[1][0] = grilleEntree[x][y-1];
 		} catch (Exception e) {
 			instantane[1][0] = false;
 		}
 		
+		instantane[1][1] = grilleEntree[x][y];
+		
 		try {
-			instantane[2][0] = grilleEntree[x+1][y+1];
+			instantane[1][2] = grilleEntree[x][y+1];
+		} catch (Exception e) {
+			instantane[1][2] = false;
+		}
+		
+		try {
+			instantane[2][0] = grilleEntree[x+1][y-1];
 		} catch (Exception e) {
 			instantane[2][0] = false;
 		}
@@ -77,39 +105,49 @@ public class IterationManagerImpl implements IterationManager {
 		}
 		
 		try {
-			instantane[2][2] = grilleEntree[x+1][y-1];
+			instantane[2][2] = grilleEntree[x+1][y+1];
 		} catch (Exception e) {
 			instantane[2][2] = false;
-		}
-		
-		try {
-			instantane[1][2] = grilleEntree[x+1][y];
-		} catch (Exception e) {
-			instantane[1][2] = false;
-		}
-		
-		try {
-			instantane[0][2] = grilleEntree[x+1][y-1];
-		} catch (Exception e) {
-			instantane[0][2] = false;
-		}
-		
-		try {
-			instantane[0][1] = grilleEntree[x-1][y];
-		} catch (Exception e) {
-			instantane[0][1] = false;
 		}
 		
 		return instantane;
 	}
 
-	private boolean doitVivre(boolean[][] grilleEntree) {
-		// TODO Auto-generated method stub
-		return false;
+	private boolean doitNaitre(boolean[][] instantane) {
+		int nbrVivant = 0;
+		boolean bRetour = false;
+		for(int x=0 ; x<instantane.length ; x++) {
+			for(int y=0 ; y<instantane.length ; y++) {
+				if(instantane[x][y])
+					nbrVivant++;
+			}
+		}
+				
+		if(nbrVivant == 3)
+			bRetour=true;
+		
+		return bRetour;
 	}
 
-	private boolean doitSurvivre(boolean[][] grilleEntree) {
+	private boolean doitSurvivre(boolean[][] instantane) {
+		int nbrVivant = -1;
+		boolean bRetour = false;
+		for(int x=0 ; x<instantane.length ; x++) {
+			for(int y=0 ; y<instantane.length ; y++) {
+				if(instantane[x][y])
+					nbrVivant++;
+			}
+		}
+				
+		if(nbrVivant >=2 && nbrVivant <= 3)
+			bRetour=true;
 		
-		return false;
+		return bRetour;
 	}
+
+	public int getNbrIteration() {
+		return this.nbrIteration;
+	}
+	
+	
 }

@@ -14,12 +14,27 @@ public class Grille {
 			}
 		}
 		
-		grille[0][0] = true;
-		grille[1][0] = true;
-		grille[1][1] = true;
-		grille[1][2] = true;
+//		grille[10][10] = true;
+//		grille[11][10] = true;
+//		grille[12][10] = true;
+//		grille[13][10] = true;
+//		grille[14][10] = true;	
 		
-		System.out.println("ok");
+		
+//		grille[10][10] = true;
+//		grille[10][11] = true;
+//		grille[11][11] = true;
+//		grille[11][10] = true;
+//		grille[10][9] = true;
+		
+		grille[10][10] = true;
+		grille[10][11] = true;
+		grille[11][12] = true;
+		grille[12][11] = true;
+		grille[12][10] = true;
+		grille[12][9] = true;
+		grille[11][9] = true;
+
 		
 	}
 
@@ -33,7 +48,16 @@ public class Grille {
 		return grille[x][y];
 	}
 
-	public boolean[][] getGrille() {
+	public static boolean[][] getGrille() {
 		return grille;
+	}
+	public static void setGrille(boolean[][] grille) {
+		Grille.grille = grille;
+		
+//		for(int x=0 ; x<grille.length ; x++) {
+//			for(int y=0 ; y<grille.length ; y++) {
+//				Grille.grille[x][y] = grille[x][y];
+//			}
+//		}
 	}
 }

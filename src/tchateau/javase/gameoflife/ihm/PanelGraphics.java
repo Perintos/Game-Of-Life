@@ -1,5 +1,7 @@
 package tchateau.javase.gameoflife.ihm;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,8 +25,12 @@ public class PanelGraphics extends JPanel implements ActionListener {
 		
 	}
 	
-	public void paintComponent(Graphics g) {
-		System.out.println("hello");
+	public void paint(Graphics g) {
+		System.out.println("repaindre");
+		g.setColor(Color.WHITE);
+		g.fillRect(0,0,this.getWidth(),this.getWidth());
+		
+		g.setColor(Color.BLACK);
 
 		
 		for(int i=0 ; i<grille.getCote() ; i++) {
@@ -35,11 +41,16 @@ public class PanelGraphics extends JPanel implements ActionListener {
 					g.drawRect(i*Cell.getCote(), j*Cell.getCote(), Cell.getCote(), Cell.getCote());
 			}
 		}
+		
+		g.setColor(Color.RED);
+		g.setFont(new Font("Arial", Font.BOLD, 30));
+		g.drawString(String.valueOf(this.iterationManager.getNbrIteration()), this.getWidth()-this.getWidth()/10, 50);
+		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		iterationManager.jouer(grille.getGrille());
+		Grille.setGrille(iterationManager.jouer(Grille.getGrille()));
 		repaint();
-	}
+	}	
 }
