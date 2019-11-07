@@ -12,8 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import tchateau.javase.gameoflife.bll.InterfaceManager;
-import tchateau.javase.gameoflife.bll.InterfaceManagerFact;
 import tchateau.javase.gameoflife.bll.IterationManager;
 import tchateau.javase.gameoflife.bll.IterationManagerFact;
 import tchateau.javase.gameoflife.bo.Cell;
@@ -25,14 +23,12 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 	private Grille grille;
 	boolean isEditable = true;
 	IterationManager iterationManager;
-	InterfaceManager interfaManager;
 	
 	public PanelGraphics() {
 		
 		grille = new Grille();
 		RessourcesListener rl = new RessourcesListener();
 		iterationManager = IterationManagerFact.getInstance();		
-		interfaManager = InterfaceManagerFact.getInstance();
 		iterationManager.addTimer(new Timer(rl.readTimer(), this));
 		
 		this.addMouseListener(this);
