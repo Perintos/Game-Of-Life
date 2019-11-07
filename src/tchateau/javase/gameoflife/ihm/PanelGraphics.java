@@ -26,7 +26,6 @@ public class PanelGraphics extends JPanel implements ActionListener {
 	}
 	
 	public void paint(Graphics g) {
-		System.out.println("repaindre");
 		g.setColor(Color.WHITE);
 		g.fillRect(0,0,this.getWidth(),this.getWidth());
 		
