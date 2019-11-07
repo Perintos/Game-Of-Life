@@ -35,6 +35,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==this.buton) {
 			this.pan.changeStatusTimerIteration();
+			this.pan.setEditable(false);
 
 			if(this.buton.getText().equalsIgnoreCase("start")) {
 				this.buton.setText("PAUSED");

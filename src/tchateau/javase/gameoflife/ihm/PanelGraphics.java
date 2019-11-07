@@ -24,6 +24,7 @@ import tchateau.javase.gameoflife.ressources.RessourcesListener;
 
 public class PanelGraphics extends JPanel implements ActionListener, MouseListener {
 	private Grille grille;
+	boolean isEditable = true;
 	IterationManager iterationManager;
 	InterfaceManager interfaManager;
 	
@@ -36,6 +37,14 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 		iterationManager.addTimer(new Timer(rl.readTimer(), this));
 		
 		this.addMouseListener(this);
+	}
+	
+	public boolean isEditable() {
+		return isEditable;
+	}
+	
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
 	}
 	
 	public void paint(Graphics g) {
@@ -78,7 +87,7 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 		int y ;
 
 		
-		if(rl.readcellside()>0) {
+		if(rl.readcellside()>0 && isEditable) {
 			x = e.getX()/rl.readcellside();
 			y = e.getY()/rl.readcellside();
 			
