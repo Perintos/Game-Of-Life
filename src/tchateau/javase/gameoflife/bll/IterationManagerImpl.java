@@ -3,15 +3,9 @@ package tchateau.javase.gameoflife.bll;
 
 import javax.swing.Timer;
 
-import tchateau.javase.gameoflife.ihm.PanelGraphics;
-
 public class IterationManagerImpl implements IterationManager {
 	Timer iterationTimer;
 	int nbrIteration = 0;
-	
-	public IterationManagerImpl(PanelGraphics pan){
-		iterationTimer = new Timer(1000, pan);
-	}
 
 	@Override
 	public void startIterationTimer() {
@@ -147,6 +141,20 @@ public class IterationManagerImpl implements IterationManager {
 
 	public int getNbrIteration() {
 		return this.nbrIteration;
+	}
+
+	@Override
+	public void changeStatusTimerIteration() {
+		if(this.iterationTimer.isRunning())
+			this.iterationTimer.stop();
+		else
+			this.iterationTimer.start();
+		
+	}
+
+	@Override
+	public void addTimer(Timer timer) {
+		this.iterationTimer = timer;
 	}
 	
 	

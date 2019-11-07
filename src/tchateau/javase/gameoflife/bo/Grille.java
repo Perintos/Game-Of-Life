@@ -47,6 +47,14 @@ public class Grille {
 		// TODO Auto-generated method stub
 		return grille[x][y];
 	}
+	
+	public static void changeStatusCell(int x, int y) {
+		// TODO Auto-generated method stub
+		if(grille[x][y])
+			grille[x][y] = false;
+		else
+			grille[x][y] = true;
+	}
 
 	public static boolean[][] getGrille() {
 		return grille;

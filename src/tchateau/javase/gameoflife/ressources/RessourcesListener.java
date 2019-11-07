@@ -38,4 +38,8 @@ public class RessourcesListener {
 	public void writegrilleside(int value) {
 		prop.setProperty("grilleside", Integer.toString(value));
 	}
+
+	public int readTimer() {
+		return Integer.parseInt(prop.getProperty("timer"));
+	}
 }
