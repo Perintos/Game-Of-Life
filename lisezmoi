@@ -1,0 +1,11 @@
+Clic gauche pour placer une cellule vivante sur la grille 
+
+Pressez clic droit et déplacer la souris pour naviguer sur la grille
+
+Tourner la molette pour zoomer ou dézoomer la grille
+
+Utilisez les boutons du menu contextuel pour lancer, mettre en pause ou stoper la simulation.
+Un mode aleatoire est également disponible
+
+Dans le constructeur de la classe grille des structures sont pré-configurées. 
+Enlevez les commentaires et relancer l'application pour les découvrir.
