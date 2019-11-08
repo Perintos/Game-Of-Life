@@ -21,76 +21,74 @@ import tchateau.javase.gameoflife.ressources.RessourcesListener;
 
 
 public class PanelGraphics extends JPanel implements ActionListener, MouseListener, MouseWheelListener {
-	private Grille grille;
-	boolean isEditable = true;
-	IterationManager iterationManager;
+	private Grille grille;					//L'objet grille modélise la grille de la simulation
+	boolean isEditable = true;				//permet de savoir si on peut cliquer sur les cellule de la grille pour changer leur état
+	IterationManager iterationManager;		//contient l'instanciation des regles de la simulation
 	
-	public PanelGraphics() {
+	public PanelGraphics() {				
 		
 		grille = new Grille();
-		RessourcesListener rl = new RessourcesListener();
-		iterationManager = IterationManagerFact.getInstance();		
-		iterationManager.addTimer(new Timer(rl.readTimer(), this));
+		RessourcesListener rl = new RessourcesListener();				//un lecteur de fichier property	
+		iterationManager = IterationManagerFact.getInstance();			//instanciation des regle de la simulation
+		iterationManager.addTimer(new Timer(rl.readTimer(), this));		//ajout d'un timer au regle du jeu, le timer est connecté à cette class et à sa méthodez actionPerformed
 		
-		this.addMouseListener(this);
-		this.addMouseWheelListener(this);
+		this.addMouseListener(this);			//ajout d'un listener de souris
+		this.addMouseWheelListener(this);		//ajout d'un listener de molette de souris
 	}
 	
-	public boolean isEditable() {
+	public boolean isEditable() {					//getteur et setteur
 		return isEditable;
 	}
 	
-	public void setEditable(boolean isEditable) {
-		this.isEditable = isEditable;
+	public void setEditable(boolean isEditable) {		
+		this.isEditable = isEditable;					
 	}
 	
-	public void paint(Graphics g) {
-		g.setColor(Color.WHITE);
-		g.fillRect(0,0,this.getWidth(),this.getWidth());
+	public void paint(Graphics g) {							//methode surchargé de la classe JComponent elle dessine le JPANEL et son contenu par dessus sans effacer ce qu'il y a avant
+		g.setColor(Color.WHITE);							//Dessine un carré blanc pour effacer le contenu précédent.
+		g.fillRect(0,0,this.getWidth(),this.getWidth());	
 		
-		g.setColor(Color.BLACK);
-
+		g.setColor(Color.BLACK);							//repassse en dessin trait noir
 		
-		for(int i=0 ; i<grille.getCote() ; i++) {
-			for(int j=0 ; j<grille.getCote() ; j++) {
-				if(grille.get(i,j))
-					g.fillRect(i*Cell.getCote(), j*Cell.getCote(), Cell.getCote(), Cell.getCote());
+		for(int x=0 ; x<grille.getCote() ; x++) {			//Dessine cellule par cellule la grille
+			for(int y=0 ; y<grille.getCote() ; y++) {
+				if(grille.get(x,y))
+					g.fillRect(x*Cell.getCote(), y*Cell.getCote(), Cell.getCote(), Cell.getCote());
 				else
-					g.drawRect(i*Cell.getCote(), j*Cell.getCote(), Cell.getCote(), Cell.getCote());
+					g.drawRect(x*Cell.getCote(), y*Cell.getCote(), Cell.getCote(), Cell.getCote());
 			}
 		}
 		
-		g.setColor(Color.RED);
+		g.setColor(Color.RED);								//Dessine le compteur d'itération de la simulation
 		g.setFont(new Font("Arial", Font.BOLD, 30));
 		g.drawString(String.valueOf(this.iterationManager.getNbrIteration()), this.getWidth()-this.getWidth()/10, 50);
 		
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		Grille.setGrille(iterationManager.jouer(Grille.getGrille()));
-		repaint();
+	public void actionPerformed(ActionEvent e) {						//executé a chaque fois que le timer de IterationManagerImpl se termine
+		Grille.setGrille(iterationManager.jouer(Grille.getGrille()));	//Executer une itération de la simulation
+		repaint();														//redessine le JPanel (appel implicitement la méthode paint())
 	}
 
-	public void changeStatusTimerIteration() {
-		iterationManager.changeStatusTimerIteration();
+	public void changeStatusTimerIteration() {					//demande a iterationManagerImpl de changer le status de son timer (On/Off)
+		iterationManager.changeStatusTimerIteration();	
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		RessourcesListener rl = new RessourcesListener();
+	public void mouseClicked(MouseEvent e) {					//est appelé lors d'un clic gauche de souris 
 		int x ;
 		int y ;
 
 		
-		if(rl.readcellside()>0 && isEditable) {
+		if(Cell.getCote()>0 && isEditable) {					
 			x = e.getX()/Cell.getCote();
 			y = e.getY()/Cell.getCote();
 			
-			try {
+			try {												//Essaye de changer le status de la cellule cliqué.
 				Grille.changeStatusCell(x, y);
 				repaint();
-			}catch(Exception exception) {
+			}catch(Exception exception) {						//Si l'utilisateur clique en dehors de la grille ne fait rien
 				
 			}
 		}
@@ -120,14 +118,14 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 	}
 
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
-        int notches = e.getWheelRotation();
-        
-        if(notches>0)
+	public void mouseWheelMoved(MouseWheelEvent e) {		//appelé si la molette de la souris est tourné	
+        int notches = e.getWheelRotation();					//on obtient - si la molette est tourné vers le haut et + si c'est vers le bas
+        System.out.println(notches);
+        if(notches>0)										//en fonction de la valeur on augmente la taille du cote des cellules on la reduit
 			Cell.setCote(Cell.getCote()-1);
         else 
 			Cell.setCote(Cell.getCote()+1);
 
-		repaint();
+		repaint();											//Il faut alors redessiner le JPanel
 	}	
 }
