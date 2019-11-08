@@ -35,31 +35,31 @@ public class FenetrePrincipale extends JFrame implements ActionListener, ItemLis
 	    panMenu.setLayout(new FlowLayout());
 	    
 	    
-	    btnStart.addActionListener(this);							//ajoute un listener d'action
-	    combobox.addActionListener(this);
-	    btnReset.addActionListener(this);
+	    btnStart.addActionListener(this);							//surveiller les action sur btnStart
+	    combobox.addActionListener(this);							//surveiller les action sur combobox
+	    btnReset.addActionListener(this);							//surveiller les action sur btnReset
 	    
-	    panMenu.add(btnStart);
-	    panMenu.add(btnReset);
-	    panMenu.add(combobox);
+	    panMenu.add(btnStart);										//ajout panMenu a l'interface
+	    panMenu.add(btnReset);										//ajout btnReset a l'interface										
+	    panMenu.add(combobox);									 	//ajout combobox a l'interface									
 	    
 		this.getContentPane().add(panGraphic, BorderLayout.CENTER);	//ajout du panneau contenant la grille 
-		this.getContentPane().add(panMenu, BorderLayout.SOUTH);	//ajout du bouton de démarrage
+		this.getContentPane().add(panMenu, BorderLayout.SOUTH);		//ajout du bouton de démarrage
 
-		this.setVisible(true);									//L'application est visible à l'écran
+		this.setVisible(true);										//L'application est visible à l'écran
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==this.btnStart) {								//si le bouton de démarrage de la simulation est actionné
-			this.panGraphic.changeStatusTimerIteration();					//le timer change de status (on/off)
+			this.panGraphic.changeStatusTimerIteration();				//le timer change de status (on/off)
 			this.panGraphic.setEditable(false);							//on ne peut plus cliquer sur les cellules de la grille
 
-			if(this.btnStart.getText().equalsIgnoreCase("start")) {	//si le bouton contient le texte paused
+			if(this.btnStart.getText().equalsIgnoreCase("start")) {		//si le bouton contient le texte paused
 				this.btnStart.setText("PAUSED");						//Le text du bouton passe a PAUSED
 			}
 			else {
-				this.btnStart.setText("START");						//Le text du bouton passe a START
+				this.btnStart.setText("START");							//Le text du bouton passe a START
 			}
 		}
 		
@@ -68,7 +68,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener, ItemLis
 			this.btnStart.setText("START");
 		}
 		
-		else if(e.getSource()==this.combobox) {
+		else if(e.getSource()==this.combobox) {							//mode aleatoire si on selectionne aleatoire dans combobox
 			if(combobox.getSelectedItem().equals("Aléatoire") ) {
 				this.panGraphic.randomiserGrille();
 			}

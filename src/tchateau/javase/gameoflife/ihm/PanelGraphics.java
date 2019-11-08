@@ -100,28 +100,33 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		if(e.getButton() == MouseEvent.BUTTON3)
+	public void mousePressed(MouseEvent e) {					//cette methode est appelé quand un boutton de la souris est préssé
+		if(e.getButton() == MouseEvent.BUTTON3)					//si c'est le bouton clic droit
 		{
-			Cursor c = new Cursor(Cursor.MOVE_CURSOR);
-			this.setCursor(c);
-			mousePressClickX = e.getX();
-			mousePressClickY = e.getY();
+			Cursor c = new Cursor(Cursor.MOVE_CURSOR);			// instanciation d'un curseur de déplacement. 
+			this.setCursor(c);									// le cursor prend la forme d'un curseur de déplacement
+			mousePressClickX = e.getX();						//On enregistre la position ou l'on a préssé le bouton 
+			mousePressClickY = e.getY();						
 		}
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		this.setCursor(Cursor.getDefaultCursor());
+	public void mouseReleased(MouseEvent e) {					// quand un bouton est relaché
+		
+		if(e.getButton() == MouseEvent.BUTTON3)					//si c'est le bouton clic droit
+		{
 //		System.out.println("Deplacement - x : " +  (this.mousePressClickX - e.getX()) + " y : " +  (this.mousePressClickY - e.getY()));
 //		System.out.println("opération / " + this.grille.getPosX() + " - (" + this.mousePressClickX + " - " + e.getX() + ") = " + (this.grille.getPosX() - (this.mousePressClickX - e.getX())) );
 //		System.out.println("Nouvelle position de la grille - x : " + (this.grille.getPosX() - (this.mousePressClickX - e.getX())) + " y : " + (this.grille.getPosY() - (this.mousePressClickY - e.getY())));
 //		System.out.println("-----------------------------------------------------------------------");
-		if(e.getButton() == MouseEvent.BUTTON3)
-		{
-			this.grille.setPosX(this.grille.getPosX() - (this.mousePressClickX - e.getX()));
-			this.grille.setPosY(this.grille.getPosY() - (this.mousePressClickY - e.getY()));
-			repaint();
+			this.setCursor(Cursor.getDefaultCursor());
+
+			if(e.getButton() == MouseEvent.BUTTON3)
+			{
+				this.grille.setPosX(this.grille.getPosX() - (this.mousePressClickX - e.getX()));	// On soustrait à x la distance entre le x initiale (debut déplacement) et le x final (fin de déplacement). 
+				this.grille.setPosY(this.grille.getPosY() - (this.mousePressClickY - e.getY()));	// On soustrait à y la distance entre le y initiale (debut déplacement) et le y final (fin de déplacement). 
+				repaint();
+			}
 		}
 	}
 
@@ -129,20 +134,17 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {		//appelé si la molette de la souris est tourné	
-        int notches = e.getWheelRotation();					//on obtient - si la molette est tourné vers le haut et + si c'est vers le bas
-        if(notches>0)										//en fonction de la valeur on augmente la taille du cote des cellules on la reduit
+        int notches = e.getWheelRotation();					//on obtient -1 si la molette est tourné vers le haut et +1 si c'est vers le bas
+        if(notches>0)										//en fonction de la valeur on augmente la taille du cote des cellules ou on la reduit
 			Cell.setCote(Cell.getCote()-1);
         else 
 			Cell.setCote(Cell.getCote()+1);
 
-		repaint();											//Il faut alors redessiner le JPanel
+		repaint();											//Il faut alors redessiner le JPanel 
 	}
 
 	@Override
@@ -162,13 +164,13 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 	@Override
 	public void mouseMoved(MouseEvent e) {}
 
-	public void randomiserGrille() {
+	public void randomiserGrille() {		//appeller la méthode redomiser de grille et redessiner le JPANEL
 		this.grille.randomiser();
 		repaint();
 		
 	}
 
-	public void reset() {
+	public void reset() {					//remettre a zéro la simulation. 
 		RessourcesListener rl = new RessourcesListener();
 
 		this.iterationManager.stopIterationTimer();

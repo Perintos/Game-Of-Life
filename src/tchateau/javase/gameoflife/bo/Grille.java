@@ -128,7 +128,7 @@ public class Grille {
 		return grille.length;
 	}
 	
-	public int getPosX() {
+	public int getPosX() {	
 		return posX;
 	}
 
@@ -164,11 +164,11 @@ public class Grille {
 			grille[x][y] = true;
 	}
 
-	public void randomiser() {
+	public void randomiser() {								//remplis la grille aléatoirement.
 		for(int x=0 ; x<grille.length ; ++x) {
 			for(int y=0 ; y<grille.length ; ++y) {
 				
-				if((int)(Math.random() * 2) == 0)
+				if((int)(Math.random() * 2) == 0)			//random entre 0 et 1 inclut
 					grille[x][y]=false;
 				else
 					grille[x][y]=true;
