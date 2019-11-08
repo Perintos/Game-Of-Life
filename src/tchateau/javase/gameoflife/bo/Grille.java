@@ -3,7 +3,9 @@ package tchateau.javase.gameoflife.bo;
 import tchateau.javase.gameoflife.ressources.RessourcesListener;
 
 public class Grille {
-	private static boolean[][] grille;		//tableau de la grille qui indique quelle cellule est vivante et lesquelle ne le sont pas. 
+	private static boolean[][] grille;		//tableau de la grille qui indique quelle cellule est vivante et lesquelle ne le sont pas.
+	private int posX=0;
+	private int posY=0;
 	
 	public Grille() {
 		RessourcesListener rl = new RessourcesListener();
@@ -13,7 +15,7 @@ public class Grille {
 				grille[x][y]=false;
 			}
 		}
-
+	
 									//les structures ocilantes (de haut en bas : clignotant, balise, crapeau)
 		
 //		grille[5][5] = true;				
@@ -119,17 +121,27 @@ public class Grille {
 //		grille[18][10] = true;
 //		grille[19][10] = true;
 //		grille[20][10] = true;
-//		grille[21][10] = true;		
-
-
-		
-
-
-		
+//		grille[21][10] = true;			
 	}
 
 	public int getCote() {						//getteur et setteur
 		return grille.length;
+	}
+	
+	public int getPosX() {
+		return posX;
+	}
+
+	public void setPosX(int posX) {
+		this.posX = posX;
+	}
+
+	public int getPosY() {
+		return posY;
+	}
+
+	public void setPosY(int posY) {
+		this.posY = posY;
 	}
 
 	public boolean get(int x, int y) {

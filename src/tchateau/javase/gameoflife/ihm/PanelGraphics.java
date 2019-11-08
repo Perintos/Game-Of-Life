@@ -1,12 +1,14 @@
 package tchateau.javase.gameoflife.ihm;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
@@ -20,13 +22,15 @@ import tchateau.javase.gameoflife.bo.Grille;
 import tchateau.javase.gameoflife.ressources.RessourcesListener;
 
 
-public class PanelGraphics extends JPanel implements ActionListener, MouseListener, MouseWheelListener {
+public class PanelGraphics extends JPanel implements ActionListener, MouseListener, MouseWheelListener, MouseMotionListener {
 	private Grille grille;					//L'objet grille modélise la grille de la simulation
 	boolean isEditable = true;				//permet de savoir si on peut cliquer sur les cellule de la grille pour changer leur état
 	IterationManager iterationManager;		//contient l'instanciation des regles de la simulation
+	int mousePressClickX;
+	int mousePressClickY;
+
 	
 	public PanelGraphics() {				
-		
 		grille = new Grille();
 		RessourcesListener rl = new RessourcesListener();				//un lecteur de fichier property	
 		iterationManager = IterationManagerFact.getInstance();			//instanciation des regle de la simulation
@@ -34,6 +38,7 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 		
 		this.addMouseListener(this);			//ajout d'un listener de souris
 		this.addMouseWheelListener(this);		//ajout d'un listener de molette de souris
+		this.addMouseMotionListener(this);		//ajout d'un listener deplacement de souris de souris
 	}
 	
 	public boolean isEditable() {					//getteur et setteur
@@ -53,9 +58,9 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 		for(int x=0 ; x<grille.getCote() ; x++) {			//Dessine cellule par cellule la grille
 			for(int y=0 ; y<grille.getCote() ; y++) {
 				if(grille.get(x,y))
-					g.fillRect(x*Cell.getCote(), y*Cell.getCote(), Cell.getCote(), Cell.getCote());
+					g.fillRect(x*Cell.getCote()+this.grille.getPosX(), y*Cell.getCote()+this.grille.getPosY(), Cell.getCote(), Cell.getCote());
 				else
-					g.drawRect(x*Cell.getCote(), y*Cell.getCote(), Cell.getCote(), Cell.getCote());
+					g.drawRect(x*Cell.getCote()+this.grille.getPosX(), y*Cell.getCote()+this.grille.getPosY(), Cell.getCote(), Cell.getCote());
 			}
 		}
 		
@@ -81,9 +86,9 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 		int y ;
 		
 		if(Cell.getCote()>0 && isEditable) {					
-			x = e.getX()/Cell.getCote();
-			y = e.getY()/Cell.getCote();
-			System.out.println("x : " + x + " y : " + y);
+			x = (e.getX()-this.grille.getPosX())/Cell.getCote();
+			y = (e.getY()-this.grille.getPosY())/Cell.getCote();
+//			System.out.println("x : " + x + " y : " + y);
 
 			try {												//Essaye de changer le status de la cellule cliqué.
 				Grille.changeStatusCell(x, y);
@@ -97,17 +102,28 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		Cursor c = new Cursor(Cursor.MOVE_CURSOR);
+		this.setCursor(c);
+		mousePressClickX = e.getX();
+		mousePressClickY = e.getY();
 		
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+	public void mouseReleased(MouseEvent e) {
+		this.setCursor(Cursor.getDefaultCursor());
+//		System.out.println("Deplacement - x : " +  (this.mousePressClickX - e.getX()) + " y : " +  (this.mousePressClickY - e.getY()));
+//		System.out.println("opération / " + this.grille.getPosX() + " - (" + this.mousePressClickX + " - " + e.getX() + ") = " + (this.grille.getPosX() - (this.mousePressClickX - e.getX())) );
+//		System.out.println("Nouvelle position de la grille - x : " + (this.grille.getPosX() - (this.mousePressClickX - e.getX())) + " y : " + (this.grille.getPosY() - (this.mousePressClickY - e.getY())));
+//		System.out.println("-----------------------------------------------------------------------");
+
+		this.grille.setPosX(this.grille.getPosX() - (this.mousePressClickX - e.getX()));
+		this.grille.setPosY(this.grille.getPosY() - (this.mousePressClickY - e.getY()));
+		repaint();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {	
 		
 	}
 
@@ -120,12 +136,28 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {		//appelé si la molette de la souris est tourné	
         int notches = e.getWheelRotation();					//on obtient - si la molette est tourné vers le haut et + si c'est vers le bas
-        System.out.println(notches);
         if(notches>0)										//en fonction de la valeur on augmente la taille du cote des cellules on la reduit
 			Cell.setCote(Cell.getCote()-1);
         else 
 			Cell.setCote(Cell.getCote()+1);
 
 		repaint();											//Il faut alors redessiner le JPanel
-	}	
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+//		System.out.println("X = " +  this.grille.getPosX() + " / Y = " +  this.grille.getPosY());
+//		System.out.println(this.grille.getPosX() + " - " + e.getX() + " = " + (this.grille.getPosX() - e.getX()));
+//		System.out.println(this.grille.getPosY() + " - " + e.getY() + " = " + (this.grille.getPosY() - e.getY()));
+		
+//		System.out.println("drag -  x : " + e.getX() + " y : " + e.getY());
+//
+//
+//		this.grille.setPosX(this.grille.getPosX() - ( mousePressClickX - e.getX() ) );
+//		this.grille.setPosY(this.grille.getPosY() - ( mousePressClickY - e.getY() ) );
+//		repaint();
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {	}
 }
