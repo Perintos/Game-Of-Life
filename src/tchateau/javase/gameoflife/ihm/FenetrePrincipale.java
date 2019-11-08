@@ -1,19 +1,24 @@
 package tchateau.javase.gameoflife.ihm;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class FenetrePrincipale extends JFrame implements ActionListener{
+import tchateau.javase.gameoflife.ressources.ChoixStructure;
+
+public class FenetrePrincipale extends JFrame implements ActionListener, ItemListener{
 	
-	private PanelGraphics pan = new PanelGraphics();
-	private JButton buton = new JButton("START");
+	private PanelGraphics panGraphic = new PanelGraphics();
+	private JButton btnStart = new JButton("START");
+	private JButton btnReset = new JButton("STOP");
+	private ChoixStructure combobox = new ChoixStructure();
 	
 	public FenetrePrincipale() {
 		this.setTitle("Game of life");							//titrer de la fenetre
@@ -21,28 +26,51 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 		this.setLocationRelativeTo(null);
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//le bouton de fermeture de la fenetre ferme l'application et son processus
 		//this.setResizable(false);
+	    JPanel panMenu = new JPanel();
 	    this.getContentPane().setLayout(new BorderLayout());	//le layout est definit sur le model BorderLayout
+	    panMenu.setLayout(new FlowLayout());
 	    
-	    buton.addActionListener(this);							//ajoute un listener d'action 
+	    btnStart.addActionListener(this);							//ajoute un listener d'action
+	    combobox.addActionListener(this);
+	    btnReset.addActionListener(this);
 	    
-		this.getContentPane().add(pan, BorderLayout.CENTER);	//ajout du panneau contenant la grille 
-		this.getContentPane().add(buton, BorderLayout.SOUTH);	//ajout du bouton de démarrage
+	    panMenu.add(btnStart);
+	    panMenu.add(btnReset);
+	    panMenu.add(combobox);
+	    
+		this.getContentPane().add(panGraphic, BorderLayout.CENTER);	//ajout du panneau contenant la grille 
+		this.getContentPane().add(panMenu, BorderLayout.SOUTH);	//ajout du bouton de démarrage
 
 		this.setVisible(true);									//L'application est visible à l'écran
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==this.buton) {								//si le bouton de démarrage de la simulation est actionné
-			this.pan.changeStatusTimerIteration();					//le timer change de status (on/off)
-			this.pan.setEditable(false);							//on ne peut plus cliquer sur les cellules de la grille
+		if(e.getSource()==this.btnStart) {								//si le bouton de démarrage de la simulation est actionné
+			this.panGraphic.changeStatusTimerIteration();					//le timer change de status (on/off)
+			this.panGraphic.setEditable(false);							//on ne peut plus cliquer sur les cellules de la grille
 
-			if(this.buton.getText().equalsIgnoreCase("start")) {	//si le bouton contient le texte paused
-				this.buton.setText("PAUSED");						//Le text du bouton passe a PAUSED
+			if(this.btnStart.getText().equalsIgnoreCase("start")) {	//si le bouton contient le texte paused
+				this.btnStart.setText("PAUSED");						//Le text du bouton passe a PAUSED
 			}
 			else {
-				this.buton.setText("START");						//Le text du bouton passe a START
+				this.btnStart.setText("START");						//Le text du bouton passe a START
 			}
 		}
+		
+		if(e.getSource()==this.btnReset) {								//si le bouton de démarrage de la simulation est actionné
+			this.panGraphic.reset();
+			this.btnStart.setText("START");
+		}
+		
+		else if(e.getSource()==this.combobox) {
+			if(combobox.getSelectedItem().equals("Aléatoire") ) {
+				this.panGraphic.randomiserGrille();
+			}
+		}
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
 	}
 }

@@ -42,4 +42,8 @@ public class RessourcesListener {
 	public int readTimer() {
 		return Integer.parseInt(prop.getProperty("timer"));
 	}
+
+	public String readStructure() {
+		return prop.getProperty("structure");
+	}
 }

@@ -101,12 +101,13 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
-		Cursor c = new Cursor(Cursor.MOVE_CURSOR);
-		this.setCursor(c);
-		mousePressClickX = e.getX();
-		mousePressClickY = e.getY();
-		
+		if(e.getButton() == MouseEvent.BUTTON3)
+		{
+			Cursor c = new Cursor(Cursor.MOVE_CURSOR);
+			this.setCursor(c);
+			mousePressClickX = e.getX();
+			mousePressClickY = e.getY();
+		}
 	}
 
 	@Override
@@ -116,16 +117,17 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 //		System.out.println("opération / " + this.grille.getPosX() + " - (" + this.mousePressClickX + " - " + e.getX() + ") = " + (this.grille.getPosX() - (this.mousePressClickX - e.getX())) );
 //		System.out.println("Nouvelle position de la grille - x : " + (this.grille.getPosX() - (this.mousePressClickX - e.getX())) + " y : " + (this.grille.getPosY() - (this.mousePressClickY - e.getY())));
 //		System.out.println("-----------------------------------------------------------------------");
+		if(e.getButton() == MouseEvent.BUTTON3)
+		{
+			this.grille.setPosX(this.grille.getPosX() - (this.mousePressClickX - e.getX()));
+			this.grille.setPosY(this.grille.getPosY() - (this.mousePressClickY - e.getY()));
+			repaint();
+		}
 
-		this.grille.setPosX(this.grille.getPosX() - (this.mousePressClickX - e.getX()));
-		this.grille.setPosY(this.grille.getPosY() - (this.mousePressClickY - e.getY()));
-		repaint();
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {	
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
@@ -159,5 +161,22 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent e) {	}
+	public void mouseMoved(MouseEvent e) {}
+
+	public void randomiserGrille() {
+		this.grille.randomiser();
+		repaint();
+		
+	}
+
+	public void reset() {
+		RessourcesListener rl = new RessourcesListener();
+
+		this.iterationManager.stopIterationTimer();
+		this.iterationManager= IterationManagerFact.getInstance();
+		this.grille = new Grille();
+		iterationManager.addTimer(new Timer(rl.readTimer(), this));		//ajout d'un timer au regle du jeu, le timer est connecté à cette class et à sa méthodez actionPerformed
+		repaint();
+		
+	}
 }

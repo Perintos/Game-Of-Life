@@ -163,4 +163,16 @@ public class Grille {
 		else
 			grille[x][y] = true;
 	}
+
+	public void randomiser() {
+		for(int x=0 ; x<grille.length ; ++x) {
+			for(int y=0 ; y<grille.length ; ++y) {
+				
+				if((int)(Math.random() * 2) == 0)
+					grille[x][y]=false;
+				else
+					grille[x][y]=true;
+			}
+		}
+	}
 }
