@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -19,7 +22,7 @@ import tchateau.javase.gameoflife.bo.Grille;
 import tchateau.javase.gameoflife.ressources.RessourcesListener;
 
 
-public class PanelGraphics extends JPanel implements ActionListener, MouseListener {
+public class PanelGraphics extends JPanel implements ActionListener, MouseListener, MouseWheelListener {
 	private Grille grille;
 	boolean isEditable = true;
 	IterationManager iterationManager;
@@ -32,6 +35,7 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 		iterationManager.addTimer(new Timer(rl.readTimer(), this));
 		
 		this.addMouseListener(this);
+		this.addMouseWheelListener(this);
 	}
 	
 	public boolean isEditable() {
@@ -77,14 +81,13 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		RessourcesListener rl = new RessourcesListener();
-		System.out.println("x : "+ e.getX()/rl.readcellside() + " / y : " + e.getY()/rl.readcellside());
 		int x ;
 		int y ;
 
 		
 		if(rl.readcellside()>0 && isEditable) {
-			x = e.getX()/rl.readcellside();
-			y = e.getY()/rl.readcellside();
+			x = e.getX()/Cell.getCote();
+			y = e.getY()/Cell.getCote();
 			
 			try {
 				Grille.changeStatusCell(x, y);
@@ -116,5 +119,17 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+        int notches = e.getWheelRotation();
+        
+        if(notches>0)
+			Cell.setCote(Cell.getCote()-1);
+        else 
+			Cell.setCote(Cell.getCote()+1);
+
+		repaint();
 	}	
 }
