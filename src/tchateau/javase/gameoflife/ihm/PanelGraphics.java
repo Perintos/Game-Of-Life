@@ -79,12 +79,12 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 	public void mouseClicked(MouseEvent e) {					//est appelé lors d'un clic gauche de souris 
 		int x ;
 		int y ;
-
 		
 		if(Cell.getCote()>0 && isEditable) {					
 			x = e.getX()/Cell.getCote();
 			y = e.getY()/Cell.getCote();
-			
+			System.out.println("x : " + x + " y : " + y);
+
 			try {												//Essaye de changer le status de la cellule cliqué.
 				Grille.changeStatusCell(x, y);
 				repaint();
