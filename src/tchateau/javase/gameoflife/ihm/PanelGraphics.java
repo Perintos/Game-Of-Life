@@ -123,7 +123,6 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 			this.grille.setPosY(this.grille.getPosY() - (this.mousePressClickY - e.getY()));
 			repaint();
 		}
-
 	}
 
 	@Override
@@ -175,8 +174,8 @@ public class PanelGraphics extends JPanel implements ActionListener, MouseListen
 		this.iterationManager.stopIterationTimer();
 		this.iterationManager= IterationManagerFact.getInstance();
 		this.grille = new Grille();
+		this.isEditable = true;
 		iterationManager.addTimer(new Timer(rl.readTimer(), this));		//ajout d'un timer au regle du jeu, le timer est connecté à cette class et à sa méthodez actionPerformed
 		repaint();
-		
 	}
 }

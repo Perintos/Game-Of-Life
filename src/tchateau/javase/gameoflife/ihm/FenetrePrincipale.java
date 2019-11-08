@@ -10,17 +10,21 @@ import java.awt.event.ItemListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 
 import tchateau.javase.gameoflife.ressources.ChoixStructure;
+import tchateau.javase.gameoflife.ressources.RessourcesListener;
 
 public class FenetrePrincipale extends JFrame implements ActionListener, ItemListener{
 	
 	private PanelGraphics panGraphic = new PanelGraphics();
 	private JButton btnStart = new JButton("START");
 	private JButton btnReset = new JButton("STOP");
+	private JSpinner spin = new JSpinner();
 	private ChoixStructure combobox = new ChoixStructure();
 	
 	public FenetrePrincipale() {
+		RessourcesListener rl = new RessourcesListener();
 		this.setTitle("Game of life");							//titrer de la fenetre
 		this.setSize(1080,720);									//dimensionner la fenetre
 		this.setLocationRelativeTo(null);
@@ -29,6 +33,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener, ItemLis
 	    JPanel panMenu = new JPanel();
 	    this.getContentPane().setLayout(new BorderLayout());	//le layout est definit sur le model BorderLayout
 	    panMenu.setLayout(new FlowLayout());
+	    
 	    
 	    btnStart.addActionListener(this);							//ajoute un listener d'action
 	    combobox.addActionListener(this);
