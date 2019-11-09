@@ -4,8 +4,8 @@ package tchateau.javase.gameoflife.bll;
 import javax.swing.Timer;
 
 public class IterationManagerImpl implements IterationManager {
-	Timer iterationTimer;		//sert compter le temps par itération
-	int nbrIteration = 0;		//contient le nombre d'itération jouée
+	Timer iterationTimer;		//sert compter le temps par iteration
+	int nbrIteration = 0;		//contient le nombre d'iteration jouee
 
 	
 
@@ -14,7 +14,7 @@ public class IterationManagerImpl implements IterationManager {
 	}
 	
 	@Override
-	public void startIterationTimer() {				//démarre le timer
+	public void startIterationTimer() {				//demarre le timer
 		iterationTimer.start();				
 		
 	}
@@ -25,24 +25,24 @@ public class IterationManagerImpl implements IterationManager {
 	}
 
 	@Override
-	public boolean[][] jouer(boolean[][] grilleEntree) {									//joue une itération 
-		boolean[][] grilleRetour = new boolean[grilleEntree.length][grilleEntree.length];	//la grille qui représente l'état des cellule de génération suivante
-		boolean[][] instantane;																//contient un instané de la cellule courante
+	public boolean[][] jouer(boolean[][] grilleEntree) {									//joue une iteration 
+		boolean[][] grilleRetour = new boolean[grilleEntree.length][grilleEntree.length];	//la grille qui represente l'etat des cellule de generation suivante
+		boolean[][] instantane;																//contient un instane de la cellule courante
 		
 		for(int x=0 ; x<grilleEntree.length ; x++) {					//copie le tableau en parametre avec le tableau de retour
-			for(int y=0 ; y<grilleEntree.length ; y++) {				//le tableau en entré représente le génération précédente 
-				grilleRetour[x][y] = grilleEntree[x][y];				//le tableau en sortie représente la génération suivnate
+			for(int y=0 ; y<grilleEntree.length ; y++) {				//le tableau en entre represente le generation precedente 
+				grilleRetour[x][y] = grilleEntree[x][y];				//le tableau en sortie represente la generation suivnate
 			}
 		}
 		
 
-		for(int x=0 ; x<grilleEntree.length ; x++) {					//parcours chaque cellule de la génération précédente 
+		for(int x=0 ; x<grilleEntree.length ; x++) {					//parcours chaque cellule de la generation precedente 
 			for(int y=0 ; y<grilleEntree.length ; y++) {
 				
-				instantane = genererInstantane(grilleEntree, x, y);		//demande un tableau qui contient la cellule analysé au centre et les cellule adjacente (tableau de 3x3)
+				instantane = genererInstantane(grilleEntree, x, y);		//demande un tableau qui contient la cellule analyse au centre et les cellule adjacente (tableau de 3x3)
 				
 				if(instantane[1][1]) {									
-					if(!doitSurvivre(instantane))						//Si la cellule analysé est vivante on se demande si elle doit survivre
+					if(!doitSurvivre(instantane))						//Si la cellule analyse est vivante on se demande si elle doit survivre
 						grilleRetour[x][y] = false;				
 				}
 				else {
@@ -52,16 +52,16 @@ public class IterationManagerImpl implements IterationManager {
 			}
 		}
 		
-		nbrIteration++;													//on peut passer à la génération suivante donc on incrémente le nombre d'itération de 1
-		return grilleRetour;											//la grille représentant la génération est renvoyé pour aller remplacer la grille de la génération précédente. 
+		nbrIteration++;													//on peut passer à la generation suivante donc on incremente le nombre d'iteration de 1
+		return grilleRetour;											//la grille representant la generation est renvoye pour aller remplacer la grille de la generation precedente. 
 	}
 
 	private boolean[][] genererInstantane(boolean[][] grilleEntree, int x, int y) {
-		boolean[][] instantane = new boolean[3][3];						//on initilaise une grille de 3x3 cellules qui représente les cellules autour de la cellule analysées
+		boolean[][] instantane = new boolean[3][3];						//on initilaise une grille de 3x3 cellules qui represente les cellules autour de la cellule analysees
 		
 		
 		try {
-			instantane[0][0] = grilleEntree[x-1][y-1];					//on initialise les celllules de l'instantané en fonction de la grille qui représente la génération précédente.
+			instantane[0][0] = grilleEntree[x-1][y-1];					//on initialise les celllules de l'instantane en fonction de la grille qui represente la generation precedente.
 		}catch(Exception e){											//si on est sur une cellule hors de la grille alors on dit que cette cellules est morte
 			instantane[0][0] = false;									
 		}
@@ -84,7 +84,7 @@ public class IterationManagerImpl implements IterationManager {
 			instantane[1][0] = false;
 		}
 		
-		instantane[1][1] = grilleEntree[x][y];							//Il s'agit de la cellule analysée, elle existe forcément donc pas besoin de try catch			
+		instantane[1][1] = grilleEntree[x][y];							//Il s'agit de la cellule analysee, elle existe forcement donc pas besoin de try catch			
 		
 		try {
 			instantane[1][2] = grilleEntree[x][y+1];					
@@ -113,33 +113,33 @@ public class IterationManagerImpl implements IterationManager {
 		return instantane;
 	}
 
-	private boolean doitNaitre(boolean[][] instantane) {	//répond à la question : Cette cellule est morte, doit elle naitre dans la prochaine génération ?
+	private boolean doitNaitre(boolean[][] instantane) {	//repond à la question : Cette cellule est morte, doit elle naitre dans la prochaine generation ?
 		int nbrVivant = 0;
 		boolean bRetour = false;
-		for(int x=0 ; x<instantane.length ; x++) {			//parcours la grille de l'instantané pour trouvé les cellule vivante	
+		for(int x=0 ; x<instantane.length ; x++) {			//parcours la grille de l'instantane pour trouve les cellule vivante	
 			for(int y=0 ; y<instantane.length ; y++) {					
-				if(instantane[x][y])						//si la cellule est vivante alors on incrémente le nombre de cellule vivante trouvées
+				if(instantane[x][y])						//si la cellule est vivante alors on incremente le nombre de cellule vivante trouvees
 					nbrVivant++;
 			}
 		}
 				
-		if(nbrVivant == 3)									//si il y a exactement trois cellule vivante dans l'instantané alors la cellule naitra à la prochaine génération
+		if(nbrVivant == 3)									//si il y a exactement trois cellule vivante dans l'instantane alors la cellule naitra à la prochaine generation
 			bRetour=true;
 		
 		return bRetour;
 	}
 
-	private boolean doitSurvivre(boolean[][] instantane) {	//répond à la question : Cette cellule n'existe pas, doit elle survivre dans la prochaine génération ?
-		int nbrVivant = -1;									//sans compter la cellule analyzé qui est forcément vivante à l'appel de cette méthode
+	private boolean doitSurvivre(boolean[][] instantane) {	//repond à la question : Cette cellule n'existe pas, doit elle survivre dans la prochaine generation ?
+		int nbrVivant = -1;									//sans compter la cellule analyze qui est forcement vivante à l'appel de cette methode
 		boolean bRetour = false;
-		for(int x=0 ; x<instantane.length ; x++) {			//parcours la grille de l'instantané pour trouvé les cellule vivante	
+		for(int x=0 ; x<instantane.length ; x++) {			//parcours la grille de l'instantane pour trouve les cellule vivante	
 			for(int y=0 ; y<instantane.length ; y++) {		
 				if(instantane[x][y])
 					nbrVivant++;
 			}
 		}
 				
-		if(nbrVivant >=2 && nbrVivant <= 3)					//si 2 ou 3 cellule vivante entour une cellule vide alors elle pourra naitre à la prochaine génération
+		if(nbrVivant >=2 && nbrVivant <= 3)					//si 2 ou 3 cellule vivante entour une cellule vide alors elle pourra naitre à la prochaine generation
 			bRetour=true;
 		
 		return bRetour;

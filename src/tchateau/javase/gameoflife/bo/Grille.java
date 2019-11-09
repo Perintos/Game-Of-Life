@@ -86,7 +86,7 @@ public class Grille {
 //		grille[22][21] = true;
 //		grille[23][22] = true;
 
-									//Macro Structure avec 5 cellule vivante au départ
+									//Macro Structure avec 5 cellule vivante au depart
 		
 //		grille[30][20] = true;
 //		grille[21][21] = true;
@@ -156,7 +156,7 @@ public class Grille {
 		Grille.grille = grille;
 	}
 	
-	public static void changeStatusCell(int x, int y) {		//change le status d'une cellule vers vivant ou mort en fonction de l'état courant
+	public static void changeStatusCell(int x, int y) {		//change le status d'une cellule vers vivant ou mort en fonction de l'etat courant
 		// TODO Auto-generated method stub
 		if(grille[x][y])
 			grille[x][y] = false;
@@ -164,7 +164,7 @@ public class Grille {
 			grille[x][y] = true;
 	}
 
-	public void randomiser() {								//remplis la grille aléatoirement.
+	public void randomiser() {								//remplis la grille aleatoirement.
 		for(int x=0 ; x<grille.length ; ++x) {
 			for(int y=0 ; y<grille.length ; ++y) {
 				

@@ -44,14 +44,14 @@ public class FenetrePrincipale extends JFrame implements ActionListener, ItemLis
 	    panMenu.add(combobox);									 	//ajout combobox a l'interface									
 	    
 		this.getContentPane().add(panGraphic, BorderLayout.CENTER);	//ajout du panneau contenant la grille 
-		this.getContentPane().add(panMenu, BorderLayout.SOUTH);		//ajout du bouton de démarrage
+		this.getContentPane().add(panMenu, BorderLayout.SOUTH);		//ajout du bouton de demarrage
 
-		this.setVisible(true);										//L'application est visible à l'écran
+		this.setVisible(true);										//L'application est visible à l'ecran
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==this.btnStart) {								//si le bouton de démarrage de la simulation est actionné
+		if(e.getSource()==this.btnStart) {								//si le bouton de demarrage de la simulation est actionne
 			this.panGraphic.changeStatusTimerIteration();				//le timer change de status (on/off)
 			this.panGraphic.setEditable(false);							//on ne peut plus cliquer sur les cellules de la grille
 
@@ -63,13 +63,14 @@ public class FenetrePrincipale extends JFrame implements ActionListener, ItemLis
 			}
 		}
 		
-		if(e.getSource()==this.btnReset) {								//si le bouton de démarrage de la simulation est actionné
+		if(e.getSource()==this.btnReset) {								//si le bouton de demarrage de la simulation est actionne
 			this.panGraphic.reset();
 			this.btnStart.setText("START");
+			this.combobox.setSelectedIndex(0);
 		}
 		
 		else if(e.getSource()==this.combobox) {							//mode aleatoire si on selectionne aleatoire dans combobox
-			if(combobox.getSelectedItem().equals("Aléatoire") ) {
+			if(combobox.getSelectedItem().equals("Aleatoire") ) {
 				this.panGraphic.randomiserGrille();
 			}
 		}
