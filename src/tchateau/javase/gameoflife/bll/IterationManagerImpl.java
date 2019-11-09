@@ -27,7 +27,7 @@ public class IterationManagerImpl implements IterationManager {
 	@Override
 	public boolean[][] jouer(boolean[][] grilleEntree) {									//joue une itération 
 		boolean[][] grilleRetour = new boolean[grilleEntree.length][grilleEntree.length];	//la grille qui représente l'état des cellule de génération suivante
-		boolean[][] instantané;																//contient un instané de la cellule courante
+		boolean[][] instantane;																//contient un instané de la cellule courante
 		
 		for(int x=0 ; x<grilleEntree.length ; x++) {					//copie le tableau en parametre avec le tableau de retour
 			for(int y=0 ; y<grilleEntree.length ; y++) {				//le tableau en entré représente le génération précédente 
@@ -39,14 +39,14 @@ public class IterationManagerImpl implements IterationManager {
 		for(int x=0 ; x<grilleEntree.length ; x++) {					//parcours chaque cellule de la génération précédente 
 			for(int y=0 ; y<grilleEntree.length ; y++) {
 				
-				instantané = genererInstantane(grilleEntree, x, y);		//demande un tableau qui contient la cellule analysé au centre et les cellule adjacente (tableau de 3x3)
+				instantane = genererInstantane(grilleEntree, x, y);		//demande un tableau qui contient la cellule analysé au centre et les cellule adjacente (tableau de 3x3)
 				
-				if(instantané[1][1]) {									
-					if(!doitSurvivre(instantané))						//Si la cellule analysé est vivante on se demande si elle doit survivre
+				if(instantane[1][1]) {									
+					if(!doitSurvivre(instantane))						//Si la cellule analysé est vivante on se demande si elle doit survivre
 						grilleRetour[x][y] = false;				
 				}
 				else {
-					if(doitNaitre(instantané))							//Si la cellule est morte on se demande si elle doit naitre
+					if(doitNaitre(instantane))							//Si la cellule est morte on se demande si elle doit naitre
 						grilleRetour[x][y] = true ;
 				}
 			}
